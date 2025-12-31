@@ -52,6 +52,14 @@ export class TaskService {
     task.title = title;
     task.isCompleted = isCompleted;
 
+    return this.tasks;
+  }
+
+  patchUpdate(id: number, dto: Partial<UpdateTaskDto>) {
+    const task = this.findById(id);
+
+    Object.assign(task, dto);
+
     return task;
   }
 }
