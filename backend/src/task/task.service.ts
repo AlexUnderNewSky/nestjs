@@ -1,27 +1,37 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
+
+export type Task = {
+  id: number;
+  title: string;
+  isCompleted: boolean;
+};
 
 @Injectable()
 export class TaskService {
-  private tasks = [
-    {
-      id: 1,
-      title: 'Learn NestJS',
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: 'Build Api',
-      isCompleted: true,
-    },
-  ];
+  private readonly filePath = join(__dirname, '../../tasks.json'); 
+
+  private async readTasksFromFile() {
+    const data = await readFile(this.filePath, 'utf-8');
+    return JSON.parse(data);
+  }
+  private async writeTasksToFile(tasks: Task[]) {
+    await writeFile(this.filePath, JSON.stringify(tasks, null, 2));
+  }
   findAll() {
-    return this.tasks;
+    return this.readTasksFromFile();
   }
 
-  findById(id: number) {
-    const task = this.tasks.find((task) => task.id === id);
+  async findById(id: number) {
+    const tasks = await this.readTasksFromFile();
+    const task = tasks.find((task) => task.id === id);
 
     if (!task) {
       throw new NotFoundException(`Task with id ${id} not found`);
@@ -30,48 +40,67 @@ export class TaskService {
     return task;
   }
 
-  create(dto: CreateTaskDto) {
+  async create(dto: CreateTaskDto) {
+    const tasks = await this.readTasksFromFile();
     const { title } = dto;
 
     const newTask = {
-      id: this.tasks.length + 1,
+      id: tasks.length + 1,
       title,
       isCompleted: false,
     };
 
-    this.tasks.push(newTask);
+    if (!dto.title) {
+      throw new BadRequestException('Title is required');
+    } else if (dto.title.trim() === '') {
+      throw new BadRequestException('Title cannot be empty or whitespace only');
+    }
 
-    return this.tasks;
+    tasks.push(newTask);
+    await this.writeTasksToFile(tasks);
+
+    return newTask;
   }
 
-  update(id: number, dto: UpdateTaskDto) {
+  async update(id: number, dto: UpdateTaskDto) {
+    const tasks = await this.readTasksFromFile();
     const { title, isCompleted } = dto;
 
-    const task = this.findById(id);
+    const task = tasks.find((t) => t.id === id);
 
     task.title = title;
     task.isCompleted = isCompleted;
 
-    return this.tasks;
-  }
-
-  patchUpdate(id: number, dto: Partial<UpdateTaskDto>) {
-    const task = this.findById(id);
-
-    Object.assign(task, dto);
+    await this.writeTasksToFile(tasks);
 
     return task;
   }
 
-  delete(id: number) {
-    const taskIndex = this.tasks.findIndex((task) => task.id === id);
+  async patchUpdate(id: number, dto: Partial<UpdateTaskDto>) {
+    const tasks = await this.readTasksFromFile();
+    const task = tasks.find((t) => t.id === id);
+
+    if (!task) {
+      throw new NotFoundException(`Task with id ${id} not found`);
+    }
+
+    Object.assign(task, dto);
+    await this.writeTasksToFile(tasks);
+
+    return task;
+  }
+
+  async delete(id: number) {
+    const tasks = await this.readTasksFromFile();
+    const taskIndex = tasks.findIndex((task) => task.id === id);
 
     if (taskIndex === -1) {
       throw new NotFoundException(`Task with id ${id} not found`);
     }
 
-    this.tasks.splice(taskIndex, 1);
+    tasks.splice(taskIndex, 1);
+    await this.writeTasksToFile(tasks);
 
-    return this.tasks;
+    return { success: true };
   }
 }
