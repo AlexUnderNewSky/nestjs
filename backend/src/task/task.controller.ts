@@ -11,6 +11,7 @@ import {
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { PatchTaskDto } from './dto/patch-task.dto';
 
 @Controller('task')
 export class TaskController {
@@ -37,7 +38,7 @@ export class TaskController {
   }
 
   @Patch(':id')
-  patchUpdate(@Param('id') id: string, @Body() dto: Partial<UpdateTaskDto>) {
+  patchUpdate(@Param('id') id: string, @Body() dto: PatchTaskDto) {
     return this.taskService.patchUpdate(+id, dto);
   }
 

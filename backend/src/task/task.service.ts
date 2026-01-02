@@ -7,6 +7,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
+import { PatchTaskDto } from './dto/patch-task.dto';
 
 export type Task = {
   id: number;
@@ -76,7 +77,7 @@ export class TaskService {
     return task;
   }
 
-  async patchUpdate(id: number, dto: Partial<UpdateTaskDto>) {
+  async patchUpdate(id: number, dto: PatchTaskDto) {
     const tasks = await this.readTasksFromFile();
     const task = tasks.find((t) => t.id === id);
 
