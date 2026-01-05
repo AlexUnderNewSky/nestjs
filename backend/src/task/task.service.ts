@@ -6,7 +6,7 @@ import { join } from 'path';
 import { PatchTaskDto } from './dto/patch-task.dto';
 import { TaskTags } from './task-tags.enum';
 
-export type Task = {
+type Task = {
   id: number;
   title: string;
   description: string;
