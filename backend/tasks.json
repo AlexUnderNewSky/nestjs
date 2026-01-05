@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "title": "Task: Learn NestJS",
+    "description": "Dada-ya!",
+    "priority": 3,
+    "tags": [
+      "work",
+      "personal"
+    ],
+    "isCompleted": false
+  },
+  {
+    "id": 2,
+    "title": "Task: Learn NestJS",
+    "description": "Dada-ya!",
+    "priority": 3,
+    "tags": [
+      "work",
+      "personal"
+    ],
+    "isCompleted": false
+  }
+]
