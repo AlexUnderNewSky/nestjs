@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -17,7 +16,6 @@ export type Task = {
   priority: number;
   tags: TaskTags[];
   isCompleted: boolean;
-  password: string;
 };
 
 @Injectable()
@@ -48,7 +46,7 @@ export class TaskService {
 
   async create(dto: CreateTaskDto) {
     const tasks = await this.readTasksFromFile();
-    const { title, description, priority, tags, password } = dto;
+    const { title, description, priority, tags } = dto;
 
     const newTask = {
       id: tasks.length > 0 ? Math.max(0, ...tasks.map((t: Task) => t.id)) + 1 : 1,
@@ -57,7 +55,6 @@ export class TaskService {
       priority,
       tags,
       isCompleted: false,
-      password,
     };
 
     tasks.push(newTask);
@@ -68,7 +65,7 @@ export class TaskService {
 
   async update(id: number, dto: UpdateTaskDto) {
     const tasks = await this.readTasksFromFile();
-    const { title, description, priority, isCompleted, tags, password } = dto;
+    const { title, description, priority, isCompleted, tags } = dto;
 
     const task = tasks.find((t) => t.id === id);
 
@@ -77,7 +74,6 @@ export class TaskService {
     task.priority = priority;
     task.tags = tags;
     task.isCompleted = isCompleted;
-    task.password = password;
 
     await this.writeTasksToFile(tasks);
 

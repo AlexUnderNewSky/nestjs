@@ -6,15 +6,15 @@ import {
   IsOptional,
   IsPositive,
   IsString,
-  IsUrl,
   Length,
-  Matches,
 } from 'class-validator';
 import { TaskTags } from '../task-tags.enum';
+import { StartsWith } from '../decorators/start-with.decorator';
 
 export class CreateTaskDto {
   @IsString({ message: 'Title must be a string' })
   @IsNotEmpty({ message: 'Title cannot be empty' })
+  @StartsWith('Task:', { message: 'Non-valid title, must start with - Task:' })
   @Length(2, 20, { message: 'Title must be between 2 and 20 characters' })
   title: string;
 
@@ -37,14 +37,4 @@ export class CreateTaskDto {
     message: 'Each tag must be a valid enum value',
   })
   tags: TaskTags[];
-
-  @IsString({ message: 'Password must be a string' })
-  @Matches(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/, {
-    message:
-      'Password must be at least 8 characters long, contain at least one uppercase letter and one number',
-  })
-  password: string;
-
-  @IsUrl({protocols: ['http', 'https']}, { message: 'Website URL must be a valid URL' })
-  websiteUrl: string;
 }
