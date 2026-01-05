@@ -40,11 +40,4 @@ export class UpdateTaskDto {
     message: 'Each tag must be a valid enum value',
   })
   tags: TaskTags[];
-
-  @IsString({ message: 'Password must be a string' })
-  @Matches(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/, {
-    message:
-      'Password must be at least 8 characters long, contain at least one uppercase letter and one number',
-  })
-  password: string;
 }
