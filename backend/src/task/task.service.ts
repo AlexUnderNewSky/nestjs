@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { readFile, writeFile } from 'fs/promises';
@@ -20,7 +17,7 @@ export type Task = {
 
 @Injectable()
 export class TaskService {
-  private readonly filePath = join(__dirname, '../../tasks.json'); 
+  private readonly filePath = join(process.cwd(), 'src/data/json/tasks.json');
 
   private async readTasksFromFile() {
     const data = await readFile(this.filePath, 'utf-8');
@@ -49,7 +46,8 @@ export class TaskService {
     const { title, description, priority, tags } = dto;
 
     const newTask = {
-      id: tasks.length > 0 ? Math.max(0, ...tasks.map((t: Task) => t.id)) + 1 : 1,
+      id:
+        tasks.length > 0 ? Math.max(0, ...tasks.map((t: Task) => t.id)) + 1 : 1,
       title,
       description,
       priority,
