@@ -37,6 +37,11 @@ export class MovieService {
     return movies;
   }
 
+  async getGenres() {
+    const moviesData = await this.readMoviesFromFile();
+    return Object.keys(moviesData);
+  }
+
   async addMovieToGenre(dto: CreateMovieDto) {
     const moviesData = await this.readMoviesFromFile();
 
