@@ -1,5 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { MovieService } from './movie.service';
+import { CreateMovieDto } from './dto/create-movie.dto';
 
 @Controller('movie')
 export class MovieController {
@@ -13,5 +14,10 @@ export class MovieController {
   @Get('by-genre')
   getMoviesByGenre(@Query('genre') genre: string) {
     return this.movieService.getMoviesByGenre(genre);
+  }
+
+  @Post('add')
+  addMovieToGenre(@Body() dto: CreateMovieDto){
+    return this.movieService.addMovieToGenre(dto);
   }
 }
