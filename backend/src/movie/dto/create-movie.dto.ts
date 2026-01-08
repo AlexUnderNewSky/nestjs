@@ -1,10 +1,17 @@
-import { IsArray, IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 import { MovieTags } from '../movie-tags.enum';
 
 export class CreateMovieDto {
   @IsString({ message: 'Title must be a string' })
   @IsNotEmpty({ message: 'Title cannot be empty' })
-  @Length(2, 20, { message: 'Title must be between 2 and 20 characters' })
   title: string;
 
   @IsNotEmpty({ message: 'Genre cannot be empty' })
@@ -14,4 +21,10 @@ export class CreateMovieDto {
     message: 'Each tag must be a valid enum value',
   })
   genre: MovieTags[];
+
+  @IsNotEmpty({ message: 'Release year cannot be empty' })
+  @IsInt({ message: 'Release year must be an integer' })
+  @Min(1888, { message: 'Release year must be no earlier than 1888' })
+  @Max(new Date().getFullYear())
+  releaseYear: number;
 }
