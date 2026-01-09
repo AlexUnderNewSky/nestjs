@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -8,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { UpdateMovieDto } from './dto/update-movie.dto';
 
 @Controller('movie')
 export class MovieController {
@@ -18,14 +20,31 @@ export class MovieController {
     return this.movieService.findAll();
   }
 
+  @Get(':id')
+  findById(@Param('id') id: string | number) {
+    return this.movieService.findById(+id);
+  }
   @Post('create')
   create(@Body() dto: CreateMovieDto) {
     return this.movieService.create(dto);
   }
 
-  @Patch(':id')
-  togglePublicStatus(@Param('id') id: string, @Body('isPublic') isPublic: boolean) {
+  @Patch('update/:id')
+  updateMovie(@Param('id') id: string, @Body() dto: UpdateMovieDto) {
+    return this.movieService.updateMovie(+id, dto);
+  }
+
+  @Patch('/status/:id')
+  togglePublicStatus(
+    @Param('id') id: string,
+    @Body('isPublic') isPublic: boolean,
+  ) {
     return this.movieService.togglePublicStatus(+id, isPublic);
+  }
+
+  @Delete(':id')
+  deleteById(@Param('id') id: string | number) {
+    return this.movieService.deleteById(+id);
   }
 }
 
