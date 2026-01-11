@@ -3,6 +3,7 @@ import {
   IsEnum,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Max,
   Min,
@@ -14,13 +15,17 @@ export class CreateMovieDto {
   @IsNotEmpty({ message: 'Title cannot be empty' })
   title: string;
 
+  @IsString({ message: 'Description must be a string' })
+  @IsOptional()
+  description: string;
+
   @IsNotEmpty({ message: 'Genre cannot be empty' })
   @IsArray({ message: 'Tags must be an array of strings' })
   @IsEnum(MovieTags, {
     each: true,
     message: 'Each tag must be a valid enum value',
   })
-  genre: MovieTags[];
+  genre: MovieTags;
 
   @IsNotEmpty({ message: 'Release year cannot be empty' })
   @IsInt({ message: 'Release year must be an integer' })

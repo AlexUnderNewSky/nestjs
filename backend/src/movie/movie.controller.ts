@@ -21,8 +21,8 @@ export class MovieController {
   }
 
   @Get(':id')
-  findById(@Param('id') id: string | number) {
-    return this.movieService.findById(+id);
+  findById(@Param('id') id: string) {
+    return this.movieService.findById(id);
   }
   @Post('create')
   create(@Body() dto: CreateMovieDto) {
@@ -31,7 +31,7 @@ export class MovieController {
 
   @Patch('update/:id')
   updateMovie(@Param('id') id: string, @Body() dto: UpdateMovieDto) {
-    return this.movieService.updateMovie(+id, dto);
+    return this.movieService.updateMovie(id, dto);
   }
 
   @Patch('/status/:id')
@@ -39,12 +39,12 @@ export class MovieController {
     @Param('id') id: string,
     @Body('isPublic') isPublic: boolean,
   ) {
-    return this.movieService.togglePublicStatus(+id, isPublic);
+    return this.movieService.togglePublicStatus(id, isPublic);
   }
 
   @Delete(':id')
-  deleteById(@Param('id') id: string | number) {
-    return this.movieService.deleteById(+id);
+  deleteById(@Param('id') id: string) {
+    return this.movieService.deleteById(id);
   }
 }
 
