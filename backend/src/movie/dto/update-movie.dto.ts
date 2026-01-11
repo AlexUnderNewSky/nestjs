@@ -15,13 +15,17 @@ export class UpdateMovieDto {
   @IsOptional()
   title: string;
 
+  @IsString({ message: 'Description must be a string' })
+  @IsOptional()
+  description: string;
+
   @IsOptional()
   @IsArray({ message: 'Tags must be an array of strings' })
   @IsEnum(MovieTags, {
     each: true,
     message: 'Each tag must be a valid enum value',
   })
-  genre: MovieTags[];
+  genre: MovieTags;
 
   @IsOptional()
   @IsInt({ message: 'Release year must be an integer' })

@@ -5,11 +5,6 @@ import { Repository } from 'typeorm';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 
-type Movie = {
-  id: number;
-  title: string;
-};
-
 @Injectable()
 export class MovieService {
   constructor(
@@ -30,7 +25,7 @@ export class MovieService {
     });
   }
 
-  async findById(id: number): Promise<MovieEntity> {
+  async findById(id: string): Promise<MovieEntity> {
     const movie = await this.movieRepository.findOne({ where: { id: id } });
 
     if (!movie) {
@@ -47,7 +42,7 @@ export class MovieService {
   }
 
   async updateMovie(
-    id: number,
+    id: string,
     dto: UpdateMovieDto,
   ): Promise<MovieEntity | object> {
     const movie = await this.movieRepository.findOne({ where: { id } });
@@ -60,7 +55,7 @@ export class MovieService {
     return { ...movie, message: `Film with ID ${id} updated successfully` };
   }
 
-  async togglePublicStatus(id: number, status: boolean): Promise<MovieEntity> {
+  async togglePublicStatus(id: string, status: boolean): Promise<MovieEntity> {
     const movie = await this.movieRepository.findOne({ where: { id } });
     if (!movie) {
       throw new NotFoundException(`Film with ID ${id} not found`);
@@ -69,7 +64,7 @@ export class MovieService {
     return await this.movieRepository.save(movie);
   }
 
-  async deleteById(id: number): Promise<object> {
+  async deleteById(id: string): Promise<object> {
     const result = await this.movieRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Film with ID ${id} not found`);
