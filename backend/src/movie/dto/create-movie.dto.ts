@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
   Max,
   Min,
 } from 'class-validator';
@@ -32,4 +33,11 @@ export class CreateMovieDto {
   @Min(1888, { message: 'Release year must be no earlier than 1888' })
   @Max(new Date().getFullYear())
   releaseYear: number;
+
+  @IsString({ message: 'Image URL must be a string' })
+  imageUrl: string;
+
+  @IsArray({ message: 'Actor IDs must be an array of strings' })
+  @IsUUID('4', { each: true, message: 'Each actor ID must be a valid UUID' })
+  actorIds: string[];
 }

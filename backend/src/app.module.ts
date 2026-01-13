@@ -6,6 +6,7 @@ import { TaskModule } from './task/task.module';
 import { MovieModule } from './movie/movie.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReviewModule } from './review/review.module';
+import { ActorModule } from './actor/actor.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ReviewModule } from './review/review.module';
     TaskModule,
     MovieModule,
     ReviewModule,
+    ActorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
