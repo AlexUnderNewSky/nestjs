@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { TaskModule } from './task/task.module';
 import { MovieModule } from './movie/movie.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReviewModule } from './review/review.module';
 import { ActorModule } from './actor/actor.module';
 
@@ -13,20 +12,6 @@ import { ActorModule } from './actor/actor.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'postgres',
-        host: config.get<string>('POSTGRES_HOST'),
-        port: config.get<number>('POSTGRES_PORT'),
-        username: config.get<string>('POSTGRES_USER'),
-        password: config.get<string>('POSTGRES_PASSWORD'),
-        database: config.get<string>('POSTGRES_DB'),
-        autoLoadEntities: true,
-        synchronize: true,
-      }),
     }),
     TaskModule,
     MovieModule,
