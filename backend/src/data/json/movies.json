@@ -1,0 +1,26 @@
+{
+  "action": [
+    {
+      "id": 1,
+      "title": "Fight Club"
+    },
+    {
+      "id": 2,
+      "title": "Pulp Fiction"
+    },
+    {
+      "id": 3,
+      "title": "test2"
+    }
+  ],
+  "horror": [
+    {
+      "id": 1,
+      "title": "The Conjuring"
+    },
+    {
+      "id": 2,
+      "title": "test2"
+    }
+  ]
+}
