@@ -6,6 +6,7 @@ import { TaskModule } from './task/task.module';
 import { MovieModule } from './movie/movie.module';
 import { ReviewModule } from './review/review.module';
 import { ActorModule } from './actor/actor.module';
+import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ActorModule } from './actor/actor.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    PrismaModule,
     TaskModule,
     MovieModule,
     ReviewModule,
